@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="libs/bootstrap.css">
+    <style>
+        .table-striped > tbody > tr:nth-child(2) {
+            background-color: #f66;
+            color: #fff;
+            font-weight: bold;
+        }
+        tr > td{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body ng-controller="myCtrl">
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>每页显示的页数</td>
+        <td colspan="1">
+            <select name="" ng-model="selectNum">
+                <option value="2">2</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+            </select>
+        </td>
+        <td><button class="btn btn-default btn-xs" ng-click="prevPage()">上一页</button></td>
+        <td><input type="text" ng-model="pageCode"></td>
+        <td><button class="btn btn-primary btn-xs" ng-click="nextPage()">下一页</button></td>
+    </tr>
+    <tr class="tableHeader">
+        <td>num</td>
+        <td>firstName</td>
+        <td>lastName</td>
+        <td>gender</td>
+        <td>salary</td>
+        <td>birthday</td>
+        <td>likeNum</td>
+        <td>unLikeNum</td>
+        <td>likeBtn</td>
+        <td>unLikeBtn</td>
+    </tr>
+    <tr ng-repeat="user in users | limitTo:selectNum:pageCode">
+        <td>{{$index +1}}</td>
+        <td>{{user.firstName | lowercase}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.gender}}</td>
+        <!--<td>{{user.salary | number:2}}</td>-->
+        <!--<td>{{user.salary | currency:"$"}}</td>-->
+        <td>{{user.salary | currency:($index == 4?"￥":"$")}}</td>
+        <td>{{user.birthday | date:"yyyy-MM-dd"}}</td>
+        <td>{{user.likeNum}}</td>
+        <td>{{user.unLikeNum}}</td>
+        <td><button class="btn btn-success btn-xs" ng-click="countLikeNum(user)">喜欢</button></td>
+        <td><button class="btn btn-danger btn-xs" ng-click="countUnLikeNum(user)">不喜欢</button></td>
+    </tr>
+</table>
+
+</body>
+<script src="libs/jquery-1.11.3.js"></script>
+<script src="libs/bootstrap.min.js"></script>
+<script src="libs/angular.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+
+    var app = angular.module("myApp",[]);
+    app.controller("myCtrl",function($scope){//$scope 相当于js中的作用域
+        var users = [
+            {
+                "firstName":"FanG",
+                "lastName":"vane",
+                "gender":"male",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":10000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Sara",
+                "lastName":"rose",
+                "gender":"female",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":20000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Mark",
+                "lastName":"bear",
+                "gender":"male",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":30000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Pam",
+                "lastName":"hot",
+                "gender":"male",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":40000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Wang",
+                "lastName":"lao",
+                "gender":"male",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":1000,
+                "birthday":new Date('1998-01-01')
+            }
+        ];
+        var users1 = [
+            {
+                "firstName":"FanG1",
+                "lastName":"vane1",
+                "gender":"male1",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":10000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Sara1",
+                "lastName":"rose1",
+                "gender":"female1",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":20000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Mark1",
+                "lastName":"bear1",
+                "gender":"male1",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":30000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Pam1",
+                "lastName":"hot1",
+                "gender":"male1",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":40000,
+                "birthday":new Date('1998-01-01')
+            },
+            {
+                "firstName":"Wang1",
+                "lastName":"lao1",
+                "gender":"male1",
+                "likeNum":0,
+                "unLikeNum":0,
+                "salary":1000,
+                "birthday":new Date('1998-01-01')
+            }
+        ];
+            $scope.users = users;
+            $scope.pageCode = 1;
+        $scope.selectNum = 6;
+        /*if(localStorage.getItem("user")){
+            $scope.users = JSON.parse(localStorage.getItem("user"));
+        }else {
+            $scope.users = users;
+        }*/
+        $scope.countLikeNum = function(user){
+            user.likeNum++;
+            //    console.log($scope.users)
+            localStorage.setItem("user",JSON.stringify($scope.users))
+        };
+        $scope.countUnLikeNum = function(user){
+            user.unLikeNum++;
+            localStorage.setItem("user",JSON.stringify($scope.users))
+
+        };
+        $scope.prevPage = function () {
+            $scope.users =  users;
+        };
+        $scope.nextPage = function () {
+            $scope.users =  users1;
+        }
+    })
+</script>
+</html>
